@@ -1,10 +1,10 @@
-name: l81 example - GitHub Action flow to Docker hub with cache & simple tagging
+name: l8 example - GitHub Action flow to Docker hub with local cache
 
 on:
   workflow_dispatch:
   push:
     branches:
-      - 'master'
+      - 'main'
 
 jobs:
   build-push-images-with-cache:
@@ -16,7 +16,6 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Set up QEMU
-        id: quemu
         uses: docker/setup-qemu-action@v2
 
       - name: Buildx set-up
@@ -36,24 +35,18 @@ jobs:
           key: ${{ runner.os }}-multi-buildx-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-multi-buildx
-      
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
-        with:
-          images: spg51/lab:lab8
 
       - name: Build and push Docker image
         id: docker_build
         uses: docker/build-push-action@v3
         with:
           context: .
-          platforms: linux/amd64,linux/s390x,linux/arm64
+          platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,mode=max,dest=/tmp/.buildx-cache-new
+          tags: |
+            spg51/lab:gh_lab8
 
       - name: Move cache
         run: |

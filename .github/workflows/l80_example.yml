@@ -1,4 +1,4 @@
-name: l81 example - GitHub Action flow to Docker hub with cache & simple tagging
+name: l80 example - GitHub Action flow to Docker hub with local cache & multi-stage build 
 
 on:
   workflow_dispatch:
