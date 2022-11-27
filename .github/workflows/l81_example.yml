@@ -1,6 +1,7 @@
 name: l81 example - GitHub Action flow to Docker hub with cache
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - 'master'
@@ -35,6 +36,7 @@ jobs:
           key: ${{ runner.os }}-multi-buildx-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-multi-buildx
+      
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
